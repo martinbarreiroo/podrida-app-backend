@@ -7,5 +7,5 @@ data class GameResponse(
     val name: String,
     val createdAt: LocalDateTime,
     val createdBy: UserMinimalDto,
-    val playerScores: Map<String, Int>
+    val playerScores: Map<String, Int>,
 )

@@ -14,7 +14,10 @@ class PlayerScoresConverter : AttributeConverter<Map<String, Int>, String> {
     }
 
     override fun convertToEntityAttribute(dbData: String?): Map<String, Int> {
-        return if (dbData.isNullOrEmpty()) emptyMap() else
+        return if (dbData.isNullOrEmpty()) {
+            emptyMap()
+        } else {
             objectMapper.readValue(dbData, object : TypeReference<Map<String, Int>>() {})
+        }
     }
 }

@@ -3,14 +3,17 @@ package app.podrida.controller
 import app.podrida.service.UserService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/auth")
 class AuthController(private val userService: UserService) {
-
     @GetMapping("/user")
-    fun getUser(@AuthenticationPrincipal jwt: Jwt): Map<String, Any?> {
+    fun getUser(
+        @AuthenticationPrincipal jwt: Jwt,
+    ): Map<String, Any?> {
         // Extract user info from the JWT
         val auth0Id = jwt.subject
         val email = jwt.claims["username"] as? String ?: ""
@@ -24,10 +27,11 @@ class AuthController(private val userService: UserService) {
             )
         }
 
-        val user = userService.createUser(
-            auth0Id = auth0Id,
-            email = email
-        )
+        val user =
+            userService.createUser(
+                auth0Id = auth0Id,
+                email = email,
+            )
 
         return mapOf(
             "id" to user.auth0Id,

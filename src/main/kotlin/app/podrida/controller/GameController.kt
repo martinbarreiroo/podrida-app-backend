@@ -8,20 +8,24 @@ import app.podrida.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.jwt.Jwt
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/games")
 class GameController(
     private val gameService: GameService,
-    private val userService: UserService
+    private val userService: UserService,
 ) {
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createGame(
         @RequestBody request: GameCreateRequest,
-        @AuthenticationPrincipal jwt: Jwt
+        @AuthenticationPrincipal jwt: Jwt,
     ): GameResponse {
         val user: User
         val auth0Id = jwt.subject
@@ -30,18 +34,20 @@ class GameController(
         // Check if the user already exists in the database
         user = userService.findByAuth0Id(auth0Id) ?: userService.createUser(
             auth0Id = auth0Id,
-            email = email
+            email = email,
         )
-
 
         return gameService.createGame(request, user)
     }
 
     @GetMapping
-    fun getUserGames(@AuthenticationPrincipal jwt: Jwt): List<GameResponse> {
+    fun getUserGames(
+        @AuthenticationPrincipal jwt: Jwt,
+    ): List<GameResponse> {
         val auth0Id = jwt.subject
-        val user = userService.findByAuth0Id(auth0Id)
-            ?: throw IllegalStateException("User not found")
+        val user =
+            userService.findByAuth0Id(auth0Id)
+                ?: throw IllegalStateException("User not found")
 
         return gameService.getUserGames(user)
     }

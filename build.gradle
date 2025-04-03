@@ -2,9 +2,28 @@ plugins {
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.jetbrains.kotlin.jvm' version '2.1.20'
+	id 'org.jetbrains.kotlin.jvm' version '1.9.25'
     id  'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+    id 'com.diffplug.spotless' version '6.25.0'
+    id 'checkstyle'
+}
 
+checkstyle {
+        toolVersion = '10.18.0'
+        configFile = file("${rootProject.projectDir}/config/checkstyle/checkstyle.xml")
+        maxWarnings = 0
+        ignoreFailures = false
+
+}
+
+// Code formatting configuration
+spotless {
+    java {
+        googleJavaFormat()
+    }
+    kotlin {
+        ktlint()
+    }
 }
 
 group = 'com.app'
@@ -56,4 +75,9 @@ kotlin {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('build') {
+    dependsOn 'checkstyleMain'
+    dependsOn 'checkstyleTest'
 }
