@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: "podrida-app-backend"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+    environment: # Poner estas variables en un archivo .env
+      DB_USER: admin
+      DB_PASSWORD: admin
+      DB_NAME: podrida-app-db
+      DB_HOST: db
+      DB_PORT: 5432
+      DOCKER_PORT: 8080
+    env_file:
+      - .env
+  db:
+    container_name: podrida-app-db
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment: # Poner estas variables en un archivo .env
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: podrida-app-db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
