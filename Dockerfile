@@ -1,13 +1,13 @@
 FROM eclipse-temurin:21-jdk as build
 WORKDIR /app
 
-# Copy only gradle files first for better caching
-COPY build.gradle settings.gradle gradlew ./
+# Copy gradle files - adjust this to match your actual files
+COPY build.gradle gradlew ./
 COPY gradle ./gradle
 RUN chmod +x ./gradlew
 
 # Cache dependencies
-RUN ./gradlew dependencies --no-daemon
+RUN ./gradlew dependencies --no-daemon || true
 
 # Copy source code and build
 COPY . .
