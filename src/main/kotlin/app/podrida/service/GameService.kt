@@ -19,27 +19,17 @@ class GameService(private val gameRepository: GameRepository) {
         )
 
         val savedGame = gameRepository.save(game)
-        var userId = Long.MIN_VALUE
-
-        if (user.id != null) {
-            userId = user.id
-        }
 
         return GameResponse(
             id = savedGame.id.toString(),
             name = savedGame.name,
             createdAt = savedGame.createdAt,
             playerScores = savedGame.playerScores,
-            createdBy = UserMinimalDto(userId, user.name)
+            createdBy = UserMinimalDto(user.auth0Id, user.email)
         )
     }
 
     fun getUserGames(user: User): List<GameResponse> {
-
-        var userId = Long.MIN_VALUE
-        if (user.id != null) {
-            userId = user.id
-        }
 
         return gameRepository.findByCreatedByOrderByCreatedAtDesc(user).map { game ->
             GameResponse(
@@ -47,7 +37,7 @@ class GameService(private val gameRepository: GameRepository) {
                 name = game.name,
                 createdAt = game.createdAt,
                 playerScores = game.playerScores,
-                createdBy = UserMinimalDto(userId, user.name)
+                createdBy = UserMinimalDto(user.auth0Id, user.email)
             )
         }
     }

@@ -13,18 +13,24 @@ class AuthController(private val userService: UserService) {
     fun getUser(@AuthenticationPrincipal jwt: Jwt): Map<String, Any?> {
         // Extract user info from the JWT
         val auth0Id = jwt.subject
-        val email = jwt.claims["email"] as? String ?: ""
-        val name = jwt.claims["name"] as? String ?: ""
+        val email = jwt.claims["username"] as? String ?: ""
 
-        val user = userService.findOrCreateUser(
+        // Check if the user already exists in the database
+        val existingUser = userService.findByAuth0Id(auth0Id)
+        if (existingUser != null) {
+            return mapOf(
+                "id" to existingUser.auth0Id,
+                "email" to existingUser.email,
+            )
+        }
+
+        val user = userService.createUser(
             auth0Id = auth0Id,
-            email = email,
-            name = name
+            email = email
         )
 
         return mapOf(
-            "id" to user.id,
-            "name" to user.name,
+            "id" to user.auth0Id,
             "email" to user.email,
         )
     }

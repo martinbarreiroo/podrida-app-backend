@@ -1,8 +1,6 @@
 package app.podrida.model
 
 import app.podrida.utils.PlayerScoresConverter
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.UUID
@@ -20,7 +18,7 @@ class Game(
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    val createdBy: User,
+    val createdBy: User?,
 
     @Convert(converter = PlayerScoresConverter::class)
     @Column(name = "player_scores", columnDefinition = "TEXT")
@@ -28,6 +26,6 @@ class Game(
 ) {
     constructor() : this(
         name = "",
-        createdBy = User()
+        createdBy = null
     )
 }

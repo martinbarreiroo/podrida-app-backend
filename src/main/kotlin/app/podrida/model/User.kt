@@ -5,25 +5,22 @@ import java.util.*
 
 
 @Entity
-    @Table(name = "users")
-    class User(
+@Table(name = "users")
+open class User(
     @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: String?,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    val id: UUID? = null,
 
-    @Column(nullable = false, unique = true)
-        val email: String,
+    @Column(unique = true)
+    val auth0Id: String,
 
-    val name: String,
+    val email: String,
 
+    @Version
+    var version: Long = 0
+)
 
-    @Column(name = "auth0_id", unique = true)
-        val auth0Id: String
-    ) {
-        constructor() : this(
-            id = null,
-            email = "",
-            name = "",
-            auth0Id = ""
-        )
-    }
+ {
+    // Required no-arg constructor for JPA
+    protected constructor() : this(auth0Id = "", email = "")
+}

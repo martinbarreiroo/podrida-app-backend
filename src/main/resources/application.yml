@@ -15,26 +15,13 @@ spring:
         format_sql: true
     show-sql: true
   security:
-    security:
-      oauth2:
-        client:
-          registration:
-            auth0:
-              client-id: ${AUTH0_CLIENT_ID}
-              client-secret: ${AUTH0_CLIENT_SECRET}
-              scope:
-                - openid
-                - profile
-                - email
-              client-name: Auth0
-          provider:
-            auth0:
-              issuer-uri: https://${AUTH0_DOMAIN}/
-              authorization-uri: https://${AUTH0_DOMAIN}/authorize
-              token-uri: https://${AUTH0_DOMAIN}/oauth/token
-              user-info-uri: https://${AUTH0_DOMAIN}/userinfo
-              jwk-set-uri: https://${AUTH0_DOMAIN}/.well-known/jwks.json
-              user-name-attribute: sub
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI}
+
+auth0:
+  audience: ${AUTH0_AUDIENCE}
 
 server:
   port: 8080
