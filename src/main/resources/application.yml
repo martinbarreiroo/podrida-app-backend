@@ -4,9 +4,9 @@ spring:
   application:
     name: podrida-app
   datasource:
-    url: jdbc:postgresql://localhost:5432/podrida-app-db
-    username: admin
-    password: admin
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/podrida-app-db}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:admin}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
