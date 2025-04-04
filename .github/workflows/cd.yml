@@ -22,8 +22,8 @@ jobs:
           mkdir newrelic
           curl -L -o newrelic/newrelic-java.zip https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic-java.zip
           unzip newrelic/newrelic-java.zip -d newrelic
-          mv newrelic/newrelic.yml newrelic/newrelic.yml.bak # opcional
-          cp newrelic.yml newrelic/newrelic.yml
+          cp newrelic.yml newrelic/newrelic/newrelic.yml
+      
       
       
 

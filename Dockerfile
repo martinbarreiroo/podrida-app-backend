@@ -20,9 +20,8 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Crear carpeta para New Relic y copiar archivos
-RUN mkdir /app
-COPY --from=build /app/newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
-COPY --from=build /app/newrelic/newrelic.yml /usr/local/newrelic/newrelic.yml
+COPY --from=build /app/newrelic/newrelic.jar /app/newrelic.jar
+COPY --from=build /app/newrelic/newrelic.yml /app/newrelic.yml
 
 # Copiar el .jar de la app
 COPY --from=build /app/build/libs/*.jar app.jar
