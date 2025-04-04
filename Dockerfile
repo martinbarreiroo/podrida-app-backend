@@ -1,30 +1,25 @@
 FROM eclipse-temurin:21-jdk as build
 WORKDIR /app
 
-# Copy gradle files
 COPY build.gradle gradlew ./
 COPY gradle ./gradle
 RUN chmod +x ./gradlew
 
-# Cache dependencies
 RUN ./gradlew dependencies --no-daemon || true
 
-# Copy source and build
 COPY . .
 RUN ./gradlew bootJar --no-daemon
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Copy New Relic agent files
-RUN mkdir -p /usr/local/newrelic
-COPY newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
-COPY newrelic/newrelic.yml /usr/local/newrelic/newrelic.yml
-
-# Copy the app jar
+# Accept files from build args (they will come from the GitHub Action)
+ARG NEW_RELIC_JAR
+ARG NEW_RELIC_YML
 COPY --from=build /app/build/libs/*.jar app.jar
 
-EXPOSE 8080
+COPY ${NEW_RELIC_JAR} /usr/local/newrelic/newrelic.jar
+COPY ${NEW_RELIC_YML} /usr/local/newrelic/newrelic.yml
 
-# Run app with New Relic agent
+EXPOSE 8080
 ENTRYPOINT ["java", "-javaagent:/usr/local/newrelic/newrelic.jar", "-jar", "app.jar"]
