@@ -21,7 +21,7 @@ jobs:
         run: |
           mkdir -p newrelic
           curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic-java.zip
-          unzip newrelic/newrelic-java.zip -d newrelic
+          unzip newrelic-java.zip -d newrelic
           mv newrelic/newrelic/* newrelic/
 
 
