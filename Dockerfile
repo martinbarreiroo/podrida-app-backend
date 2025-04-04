@@ -19,10 +19,18 @@ RUN ./gradlew bootJar --no-daemon
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-# Copy newrelic.yml
-COPY --from=build /app/newrelic.yml ./
+# Download New Relic Java agent
+RUN curl -L https://download.newrelic.com/newrelic/java-agent/newrelic-agent/${NEW_RELIC_VERSION}/newrelic-java.zip -o newrelic-java.zip && \
+    unzip newrelic-java.zip -d /newrelic && \
+    rm newrelic-java.zip
+
+# Copy config file
+COPY --from=build /app/newrelic.yml /newrelic/newrelic.yml
+
+# Copy application jar
 COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Launch app with New Relic agent
+ENTRYPOINT ["java", "-javaagent:/newrelic/newrelic-agent.jar", "-jar", "app.jar"]
