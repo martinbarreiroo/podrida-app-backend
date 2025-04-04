@@ -19,12 +19,13 @@ jobs:
 
       - name: Download New Relic Java agent
         run: |
-            mkdir newrelic
-            curl -o newrelic/newrelic-java.zip https://download.newrelic.com/newrelic/java-agent/newrelic-java.zip
-            unzip newrelic/newrelic-java.zip -d newrelic
-            mv newrelic/newrelic.yml newrelic/newrelic.yml.bak # opcional
-            cp newrelic.yml newrelic/newrelic.yml
-
+          mkdir newrelic
+          curl -L -o newrelic/newrelic-java.zip https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic-java.zip
+          unzip newrelic/newrelic-java.zip -d newrelic
+          mv newrelic/newrelic.yml newrelic/newrelic.yml.bak # opcional
+          cp newrelic.yml newrelic/newrelic.yml
+      
+      
 
       - name: Build and Tag Docker Image
         env:
