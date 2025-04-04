@@ -24,6 +24,7 @@ jobs:
           unzip newrelic/newrelic-java.zip -d newrelic
           mv newrelic/newrelic/* newrelic/
 
+
       - name: Build and Tag Docker Image
         env:
           NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
