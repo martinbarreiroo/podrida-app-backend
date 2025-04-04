@@ -20,7 +20,7 @@ jobs:
       - name: Download New Relic Java agent
         run: |
           mkdir -p newrelic
-          curl -o newrelic/newrelic-java.zip https://download.newrelic.com/newrelic/java-agent/newrelic-java.zip
+          curl -L -o newrelic/newrelic-java.zip https://download.newrelic.com/newrelic/java-agent/newrelic-java-8.10.0.zip
           unzip newrelic/newrelic-java.zip -d newrelic
           mv newrelic/newrelic/* newrelic/
 
