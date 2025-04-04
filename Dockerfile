@@ -9,7 +9,8 @@ ARG NEW_RELIC_VERSION=8.10.0
 RUN curl -L https://download.newrelic.com/newrelic/java-agent/newrelic-agent/${NEW_RELIC_VERSION}/newrelic-java.zip -o newrelic-java.zip && \
     unzip newrelic-java.zip -d /newrelic && \
     rm newrelic-java.zip && \
-    test -f /newrelic/newrelic-agent.jar || (echo "❌ New Relic agent not found!" && exit 1)
+    test -f /newrelic/newrelic/newrelic.jar || (echo "❌ New Relic agent not found!" && exit 1)
+
 
 # Copiar archivos de la app y construir
 COPY build.gradle gradlew ./
@@ -32,9 +33,10 @@ COPY --from=build /newrelic /newrelic
 COPY --from=build /app/build/libs/*.jar app.jar
 
 # Validar que el agente exista
-RUN test -f /newrelic/newrelic-agent.jar || (echo "❌ Agent missing in final image!" && exit 1)
+RUN test -f /newrelic/newrelic/newrelic.jar || (echo "❌ New Relic agent not found!" && exit 1)
+
 
 EXPOSE 8080
 
 # Lanzar con New Relic
-ENTRYPOINT ["java", "-javaagent:/newrelic/newrelic-agent.jar", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-javaagent:/newrelic/newrelic/newrelic.jar", "-jar", "app.jar"]
