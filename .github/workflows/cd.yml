@@ -17,19 +17,9 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Download New Relic Java agent
-        run: |
-          mkdir -p newrelic
-          curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic-java.zip
-          unzip newrelic-java.zip -d newrelic
-          mv newrelic/newrelic/* newrelic/
-
-
       - name: Build and Tag Docker Image
-        env:
-          NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
-          docker build --build-arg NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} -t ghcr.io/${{ github.repository_owner }}/podrida-app-backend:latest .
+          docker build -t ghcr.io/${{ github.repository_owner }}/podrida-app-backend:latest .
 
       - name: Push Image to GHCR
         run: |
