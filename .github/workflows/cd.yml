@@ -17,6 +17,15 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Download New Relic Java agent
+        run: |
+            mkdir newrelic
+            curl -o newrelic/newrelic-java.zip https://download.newrelic.com/newrelic/java-agent/newrelic-java.zip
+            unzip newrelic/newrelic-java.zip -d newrelic
+            mv newrelic/newrelic.yml newrelic/newrelic.yml.bak # opcional
+            cp newrelic.yml newrelic/newrelic.yml
+
+
       - name: Build and Tag Docker Image
         env:
           NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}

@@ -20,7 +20,7 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Crear carpeta para New Relic y copiar archivos
-RUN mkdir -p /usr/local/newrelic
+RUN mkdir /app
 COPY --from=build /app/newrelic/newrelic.jar /usr/local/newrelic/newrelic.jar
 COPY --from=build /app/newrelic/newrelic.yml /usr/local/newrelic/newrelic.yml
 
@@ -30,4 +30,4 @@ COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
 
 # Usar el agente
-ENTRYPOINT ["java", "-javaagent:/usr/local/newrelic/newrelic.jar", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-javaagent:/app/newrelic.jar", "-jar", "app.jar"]
