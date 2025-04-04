@@ -29,7 +29,6 @@ jobs:
           AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: ./gradlew build
 
       - name: Run linting
