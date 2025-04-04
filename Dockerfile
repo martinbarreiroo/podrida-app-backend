@@ -20,8 +20,6 @@ COPY . .
 COPY newrelic.yml /newrelic/newrelic.yml
 RUN ./gradlew bootJar --no-daemon
 
----
-
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
