@@ -1,0 +1,12 @@
+common: &default_settings
+  license_key: ${NEW_RELIC_LICENSE_KEY}
+  app_name: Podrida-Backend
+  distributed_tracing:
+    enabled: true
+  log_level: info
+
+development:
+  <<: *default_settings
+
+production:
+  <<: *default_settings
