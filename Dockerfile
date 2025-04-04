@@ -20,6 +20,7 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Download New Relic Java agent
+ENV NEW_RELIC_VERSION=8.10.0
 RUN curl -L https://download.newrelic.com/newrelic/java-agent/newrelic-agent/${NEW_RELIC_VERSION}/newrelic-java.zip -o newrelic-java.zip && \
     unzip newrelic-java.zip -d /newrelic && \
     rm newrelic-java.zip
