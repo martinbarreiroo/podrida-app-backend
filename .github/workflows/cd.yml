@@ -18,6 +18,8 @@ jobs:
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Build and Tag Docker Image
+        env:
+          NEW_RELIC_LICENSE_KEY: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
         run: |
           docker build -t ghcr.io/${{ github.repository_owner }}/podrida-app-backend:latest .
 
