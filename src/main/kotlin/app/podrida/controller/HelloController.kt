@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController
 class HelloController {
     @GetMapping
     fun hello(): String {
-        return "Hello, just checking if CD works!"
+        return "Hello, just checking if CD works, again!"
     }
 }
