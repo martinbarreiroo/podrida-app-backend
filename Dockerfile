@@ -13,6 +13,7 @@ RUN ./gradlew bootJar --no-daemon
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
+
 # Accept files from build args (they will come from the GitHub Action)
 ARG NEW_RELIC_JAR
 ARG NEW_RELIC_YML
