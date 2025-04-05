@@ -13,7 +13,6 @@ RUN ./gradlew bootJar --no-daemon
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-
 # Accept files from build args (they will come from the GitHub Action)
 ARG NEW_RELIC_JAR
 ARG NEW_RELIC_YML
@@ -23,8 +22,4 @@ COPY ${NEW_RELIC_JAR} /usr/local/newrelic/newrelic.jar
 COPY ${NEW_RELIC_YML} /usr/local/newrelic/newrelic.yml
 
 EXPOSE 8080
-ENTRYPOINT ["java",
-  "-javaagent:/usr/local/newrelic/newrelic.jar",
-  "-Dnewrelic.config.file=/usr/local/newrelic/newrelic.yml",
-  "-jar",
-  "app.jar"]
+ENTRYPOINT ["java", "-javaagent:/usr/local/newrelic/newrelic.jar", "-Dnewrelic.config.file=/usr/local/newrelic/newrelic.yml", "-jar", "app.jar"]
