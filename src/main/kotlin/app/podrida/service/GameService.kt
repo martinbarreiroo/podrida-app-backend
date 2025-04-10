@@ -14,6 +14,10 @@ class GameService(private val gameRepository: GameRepository) {
         request: GameCreateRequest,
         user: User,
     ): GameResponse {
+        if (request.name.isBlank()) {
+            request.name = "Podrida Game"
+        }
+
         val game =
             Game(
                 name = request.name,
